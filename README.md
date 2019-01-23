@@ -8,11 +8,11 @@
 - usability
 - reusability
 
-##Examples and usage
+## Examples and usage
 
 
 
-##Running queries. PDO::query()
+## Running queries. PDO::query()
 
 Not recommended, it is vulnerable to SQL injection. but it can be used if you do NOT want to parameterize the query
 
@@ -27,7 +27,7 @@ foreach ($db->stmt as $row)
 $db->breakFree();// close close connection / destroy the object
 ```
 
-##Prepared statements. Protection from SQL injections. PDO::prepare()
+## Prepared statements. Protection from SQL injections. PDO::prepare()
 
 NOTE: only string and numeric literals can be bound by PDO prepared statements. an identifier, or a comma-separated list, or a part of a quoted string literal or whatever else arbitrary query part cannot be bound using a prepared statement.
 
@@ -60,7 +60,7 @@ foreach ($db->stmt as $row)
 $db->breakFree();// close close connection / destroy the object
 ```
 
-##Prepared statements. Multiple execution:
+## Prepared statements. Multiple execution:
 
 you can use prepared statements for the multiple execution of a prepared query
 ```
@@ -74,7 +74,7 @@ for($i=1;$i<100;$i++)
 $db->breakFree();// close close connection / destroy the object
 ```
 
-##Get the number of affected rows:
+## Get the number of affected rows:
 
 ```
 $db = new pdoDB();
@@ -83,7 +83,7 @@ $db->preparedQuery("UPDATE usrs SET log = :log",[":log"=>"ok"]);
 echo $db->stmt->rowCount();
 ```
 
-##Getting data foreach()
+## Getting data foreach()
 
 ```
 $db = new pdoDB();
@@ -95,7 +95,7 @@ foreach ($db->stmt as $row)
 }
 ```
 
-##Getting data fetch()
+## Getting data fetch()
 
 **PDO::FETCH_NUM** returns enumerated array
 **PDO::FETCH_ASSOC** returns associative array
@@ -143,7 +143,7 @@ echo "<br><br>";
 ```
 
 
-##Getting data fetchAll()
+## Getting data fetchAll()
 
 Returns an array that contains all rows in the result set, This function should not be used if many rows has been selected "Many" means more than it is suitable to be shown on the average web page.
 ```
@@ -155,7 +155,7 @@ $result = $db->stmt->fetchAll(); // default PDO::FETCH_BOTH
 var_dump($result);
 ```
 
-##Getting data fetchAll() PDO::FETCH_CLASS
+## Getting data fetchAll() PDO::FETCH_CLASS
 
 Produce an array filled with objects the class we want, setting class properties from returned values.
 
@@ -194,7 +194,7 @@ var_dump($usr);
 
 
 
-##getSingleValue()
+## getSingleValue()
 
 A helper function that returns value of the singe field of returned row
 
@@ -213,7 +213,7 @@ var_dump($result);
 ```
 
 
-##getArrayColumn()
+## getArrayColumn()
 
 It allows to fetch all values of a particular column in one-dimensional array, you can pass the name of the column or the position of the column 0-indexed
 
@@ -225,7 +225,7 @@ var_dump($result);
 ```
 
 
-##getKeyValuePairs()
+## getKeyValuePairs()
 
 It allows to get an array key-value pairs indexed by the first field.
 fetch mode requires the result set to contain extactly 2 columns
@@ -237,7 +237,7 @@ var_dump($result);
 ```
 
 
-##getIndexedUnique()
+## getIndexedUnique()
 
 Same as getKeyValuePairs, but getting not one column but full row  indexed by unique field
 ```
@@ -247,7 +247,7 @@ var_dump($result);
 ```
 
 
-##getGroupedByFirstField()
+## getGroupedByFirstField()
 
 will group rows into a nested array, where indexes will be unique values from the first columns. e.g. 'SELECT sex, name, car FROM users'
 
@@ -258,7 +258,7 @@ var_dump($result);
 ```
 
 
-##Prepared statements and LIKE clause
+## Prepared statements and LIKE clause
 
 In PDO library you need to be careful using placeholders with LIKE SQL clause. One would think that a query can be:
 
@@ -280,7 +280,7 @@ applies for **Named placeholders** and **Positional placeholders**.
 
 
 
-###the esay way
+### the esay way
 
 ```
 $db = new pdoDB();
@@ -296,7 +296,7 @@ foreach ($db->stmt as $row)
 ```
 
 
-###the PDO way
+### the PDO way
 
 ```
 $db = new pdoDB();
@@ -313,7 +313,7 @@ foreach ($db->stmt as $row)
 
 
 
-###the mistake form for PDO, but fixed by the library
+### the mistake form for PDO, but fixed by the library
 
 ```
 // in this case we use Named placeholders but is the same for Positional placeholders
@@ -343,7 +343,7 @@ if the sentence fail yu can tray use the the **"PDO way"** that is the correct a
 
 
 
-##Prepared statements and IN clause
+## Prepared statements and IN clause
 
 
 in PDO is not possible to substitute an arbitrary query part with a placeholder for example, a **string '1,2,3'** will be bound as a string, resulting in:
@@ -386,7 +386,7 @@ $arrayParameters = [
 ```
 
 
-##Prepared statements with LIMIT clause
+## Prepared statements with LIMIT clause
 
 
 When in emulation mode (which is on by default) PDO treats every parameter as a string. As a result, the prepared [ **LIMIT ?,?** ]  query becomes **LIMIT '10', '10'** which is invalid syntax in MySQL that causes query to fail.
@@ -411,7 +411,7 @@ foreach ($db->stmt as $row)
 
 
 
-##Prepared statements table and field names
+## Prepared statements table and field names
 
 PDO has no placeholder for identifiers (table and field names), a developer must manually format them.
 
