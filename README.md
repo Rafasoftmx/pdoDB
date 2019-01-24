@@ -97,11 +97,11 @@ foreach ($db->stmt as $row)
 
 ## Getting data fetch()
 
-**PDO::FETCH_NUM** returns enumerated array
-**PDO::FETCH_ASSOC** returns associative array
-**PDO::FETCH_BOTH** both of the above
-**PDO::FETCH_OBJ** returns object
-**PDO::FETCH_LAZY** allows all three (numeric associative and object) methods without memory overhead.
+- **PDO::FETCH_NUM** returns enumerated array
+- **PDO::FETCH_ASSOC** returns associative array
+- **PDO::FETCH_BOTH** both of the above
+- **PDO::FETCH_OBJ** returns object
+- **PDO::FETCH_LAZY** allows all three (numeric associative and object) methods without memory overhead.
 
 ```
 $db = new pdoDB();
@@ -280,7 +280,7 @@ applies for **Named placeholders** and **Positional placeholders**.
 
 
 
-### the esay way
+### the easy way
 
 ```
 $db = new pdoDB();
@@ -347,7 +347,7 @@ if the sentence fail yu can tray use the the **"PDO way"** that is the correct a
 
 
 in PDO is not possible to substitute an arbitrary query part with a placeholder for example, a **string '1,2,3'** will be bound as a string, resulting in:
-SELECT * FROM table WHERE column IN ('1,2,3') that search only one value -> **'1,2,3'**
+`SELECT * FROM table WHERE column IN ('1,2,3')` that search only one value -> **'1,2,3'**
 
 
 by these reason in PDO we need to put something like this [ **IN (?,?,?)** ]
@@ -379,9 +379,9 @@ and the parameters change to:
 ```
 $arrayParameters = [
 	":ids0"=>1,
-	":ids0"=>50,
-	":ids0"=>30,
-	":ids0"=>45
+	":ids1"=>50,
+	":ids2"=>30,
+	":ids3"=>45
 ];
 ```
 
