@@ -421,7 +421,7 @@ For mysql to format an identifier, follow these 2 rules:
 - Escape backticks inside by doubling them.
 
 
-in this case we can use the function **formatIdentifier()** in this class to do the job when for some reason we insert dynamically the table and field names
+We can use the function **formatIdentifier()** in this class to do the job when for some reason we insert dynamically the table and field names
 
 ```
 $db = new pdoDB();

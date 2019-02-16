@@ -1,6 +1,5 @@
 <?php
-//include_once dirname(__FILE__)."/../app/Config.php";
-//include_once "class.logApp.php";
+
 
 /*
             _       _____  ____                                
@@ -22,11 +21,12 @@
 
 * Simple class to handle a connection to MySQL DB and work around of the extension "PHP Data Objects" (PDO)
 * which provides a data access abstraction layer.
+* see examples at the end of this file
 
-* PDO benefits:
-* 	-security
-* 	-usability 
-* 	-reusability
+* make connection, queries and fixes sentences 'IN', 'LIKE' and 'L'IMIT' for work properly in PDO MySQL
+* 
+* 
+* 
 *  
 * 
 */
@@ -109,14 +109,14 @@ class pdoDB
 
 		$this->stmt = $this->pdo->prepare($query);
 		
-		// detect LIMIT clause and send parameters by bindParam
+		// detect LIMIT clause and send parameters by bindValue
 		if($this->fixParametersClauseLIMIT($query,$arrayParameters))
 		{
-			$this->stmt->execute();
+			return $this->stmt->execute();
 		}
 		else
 		{
-			$this->stmt->execute($arrayParameters);
+			return $this->stmt->execute($arrayParameters);
 		}		
 		
 	}
@@ -487,16 +487,16 @@ class pdoDB
 			{
 				$limitClause = $output_array[0];
 				
-				//send parameters by bindParam, detect if param is in LIMIT clause and sen it as PDO::PARAM_INT
+				//send parameters by bindValue, detect if param is in LIMIT clause and send it as PDO::PARAM_INT
 				foreach ($arrayParameters as $Key => $Value)
 				{
 					if(strpos ($limitClause,$Key) === false)
 					{
-						$this->stmt->bindParam($Key, $Value);	
+						$this->stmt->bindValue($Key, $Value);	
 					}
 					else
 					{
-						$this->stmt->bindParam($Key, intval($Value),PDO::PARAM_INT);
+						$this->stmt->bindValue($Key, intval($Value),PDO::PARAM_INT);
 					}					
 				}
 
@@ -519,11 +519,11 @@ class pdoDB
 						// if is '?' in LIMIT clause sen it as PDO::PARAM_INT
 						if($pos>= $limitClausePosIni && $pos <= $limitClausePosEnd )
 						{
-							$this->stmt->bindParam($i+1, intval($arrayParameters[$i]),PDO::PARAM_INT);//$i+1 because 1-based index
+							$this->stmt->bindValue($i+1, intval($arrayParameters[$i]),PDO::PARAM_INT);//$i+1 because 1-based index
 						}
 						else
 						{
-							$this->stmt->bindParam($i+1, $arrayParameters[$i]);//$i+1 because 1-based index
+							$this->stmt->bindValue($i+1, $arrayParameters[$i]);//$i+1 because 1-based index
 						}							
 					}
 				}
@@ -797,7 +797,7 @@ getGroupedByFirstField()
 will group rows into a nested array, where indexes will be unique values from the first columns. e.g. 'SELECT sex, name, car FROM users'
 
 $db = new pdoDB();
-$result = $db->getIndexedUnique("SELECT grupo,username,email FROM usrs");
+$result = $db->getGroupedByFirstField("SELECT grupo,username,email FROM usrs");
 var_dump($result);
 
 
@@ -982,145 +982,5 @@ foreach ($db->stmt as $row)
 
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-$db = new pdoDB(); 
-
-$table = $db->formatIdentifier("usrs");
-$field1 = $db->formatIdentifier("username");
-$field2 = $db->formatIdentifier("id");
-
-$db->preparedQuery("SELECT ".$field1." FROM ".$table." where ".$field2." = :id",[":id"=>1]); 
-
-foreach ($db->stmt as $row)
-{
-    var_dump($row);	
-}
-$db->breakFree();// close close connection / destroy the object
-
-*/
-
-
-
-
-/*
-$db = new pdoDB();
-
-$db->preparedQuery("SELECT * FROM usrs");
-$result = $db->stmt->fetchAll();
-var_dump($result);
-*/
-
-/*
-
-
-$db = new pdoDB(); //create object and make connection
-$query = "SELECT username FROM usrs where id > ? and username Like '%?%' or username Like %?% and grupo > ?";
-$arrayParameters = [0,'admin','David',0]; 
-
-
-$query = "SELECT username FROM usrs where id > :id and username Like '%:username1%' or username Like %:username2% and grupo > :grupo";
-$arrayParameters = [
-	":id"=>0,
-	":username1"=>'admin',
-	":username2"=>'David',
-	":grupo"=>0
-]; 
-
-$db->preparedQuery($query,$arrayParameters); // build and execute query, fixes sentences IN, LIKE and LIMIT for work properly in PDO MySQL
-
-foreach ($db->stmt as $row)
-{
-    var_dump($row);	
-}
-$db->breakFree();// close close connection / destroy the object
-*/
-
-
-/*
-$sql = "SELECT * FROM table WHERE foo=? AND column IN (?) AND bar=? AND baz=?x";
-$arr = ["foo",[55,2,3],"bar","baz"];
-
-$sql = "SELECT edicion.id, edicion.numero, edicion.nombre FROM edicion WHERE edicion.anio > :anio LIMIT :offset,:limit";
-$arr = [":anio"=>0,":offset"=>1,":limit"=>2];
-
-
-$sql = "SELECT * FROM users WHERE id > ? LIMIT ?,?";
-$arr = [0,1,10];
-
-$db = new pdoDB();
-//$db->fixParametersClauseIN($sql,$arr);
-$db->preparedQuery($sql,$arr);
-
-foreach ($db->stmt as $row)
-{
-    var_dump($row);
-	echo "<br>";
-}
-
-
-
-$db = new pdoDB(); 
-$query = "SELECT username FROM usrs LIMIT :offset,:limit";
-$arrayParameters = [
-	":offset"=>5,
-	":limit"=>10
-]; 
-$db->preparedQuery($query,$arrayParameters); // internally fix the parameters and the query to work ok.
-
-foreach ($db->stmt as $row)
-{
-    var_dump($row);	
-}
-
-*/
-
-
-
-$db = new pdoDB(); 
-$query = "SELECT username FROM usrs LIMIT :offset,:limit";
-$arrayParameters = [
-	":offset"=>'5',
-	":limit"=>'10'
-]; 
-$db->preparedQuery($query,$arrayParameters); // internally fix the parameters to work ok. also makes a cast if the parameter come as string
-
-foreach ($db->stmt as $row)
-{
-    var_dump($row);	
-}
-
 
 ?>
