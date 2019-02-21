@@ -34,7 +34,7 @@
 class pdoDB
 {
 
- 	var  $db_type="mysql";
+ 	var  $db_type="mysql"; //database management system 
 	var  $db_host= "localhost"; //Server host and port if any
 	var  $db_name= "estepais"; //Database name
 	var  $db_usr= "root"; //User name
@@ -51,8 +51,11 @@ class pdoDB
 	* create the DSN and establish the connection, assign the PDO database handler object to $this->pdo
 	*/
 	function __construct() 
-	{		
-		$this->db_dsn = $this->db_type.":host=".$this->db_host."; dbname=".$this->db_name.";charset=utf8";
+	{	
+		if($this->db_dsn == "")
+		{
+			$this->db_dsn = $this->db_type.":host=".$this->db_host."; dbname=".$this->db_name.";charset=utf8";	
+		}		
 		
 		try 
 		{
@@ -128,7 +131,7 @@ class pdoDB
 	* 
 	* @param string #columnName
 	*/
-	function getColumnIndex($columnName) 
+	private function getColumnIndex($columnName) 
 	{
 		$columnIndex = false;
 		
@@ -284,7 +287,7 @@ class pdoDB
 	* 
 	* @param string &$query	
 	*/
-	function fixParametersClauseLIKE(&$query,&$arrayParameters)
+	private function fixParametersClauseLIKE(&$query,&$arrayParameters)
 	{
 				
 		if(preg_match('/[\s]+LIKE[\s]+[^\s]+[\s|$]?/i', $query) == 0) //if NO contain LIKE clause
@@ -391,7 +394,7 @@ class pdoDB
 	* @param string &$query
 	* @param array &$arrayParameters
 	*/
-	function fixParametersClauseIN(&$query,&$arrayParameters)
+	private function fixParametersClauseIN(&$query,&$arrayParameters)
 	{
 		if(preg_match('/IN(.)*\((.*)\)/i', $query) == 0) //if NOT contain IN clause
 		{
@@ -476,7 +479,7 @@ class pdoDB
 	* @param string $query
 	* @param array $arrayParameters
 	*/
-	function fixParametersClauseLIMIT($query,$arrayParameters)
+	private function fixParametersClauseLIMIT($query,$arrayParameters)
 	{
 
 		$output_array= array();
@@ -543,7 +546,7 @@ class pdoDB
 	* in mysql to format an identifier, follow these rules:
 	* *Enclose identifier in backticks.
 	* *Escape backticks inside by doubling them
-	* this function do the trick to try eliminate the classical SQL injection in table and field names when we added them dynamically.
+	* this method do the trick to try eliminate the classical SQL injection in table and field names when we added them dynamically.
 	* 
 	* @param string $identifier	
 	*/
