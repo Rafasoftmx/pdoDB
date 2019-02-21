@@ -25,9 +25,9 @@
 
 - **\__construct**: create the DSN and establish the connection, assign the PDO database handler object to $this->pdo
 - **breakFree**: Close the connection and destroys the object
-- **directQuery($query)**: executes the query sended as parameter, Not recommended, it is vulnerable to SQL injection. but it can be used if you do not want to parameterize the query
+- **directQuery($query)**: executes the query sended as parameter, it can be used if you do not want to parameterize the query
 - **preparedQuery($query,$arrayParameters)**: Prepare and execute a query, fixes sentences IN, LIKE and LIMIT for work properly in PDO MySQL. the sentence has to be parameterized with:
-  - **ositional placeholders** e.g. 'SELECT * FROM users WHERE **email = ?** AND **status=?**'
+  - **Positional placeholders** e.g. 'SELECT * FROM users WHERE **email = ?** AND **status=?**'
   - **Named placeholders** e.g. 'SELECT * FROM users WHERE **email = :email** AND **status=:status**'
 - **getSingleValue($query,$arrayParameters,$column = 0)**: It allows to fetch the value of a particular column, you can pass the name of the column or the position of the column 0-indexed
 - **getArrayColumn($query,$arrayParameters,$column = 0)**: It allows to fetch all values of a particular column in one-dimensional array, you can pass the name of the column or the position of the column 0-indexed
