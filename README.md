@@ -9,32 +9,32 @@
 
 ## Properties
 
-- db_driver_options: Options passed to PDO on conection, http://php.net/manual/es/pdo.setattribute.php
-- pdo: PDO object, Represents a connection between PHP and a database server
-- stmt: PDOStatement object, Represents a prepared statement and, after the statement is executed, an associated result set
-**for connection**
-- db_type: database management system (default mysql)
-- db_host: Server host and port if any
-- db_name: Database name
-- db_usr: User name
-- db_pss: Password
-- db_dsn: Data Source Name(DSN), auto generated in base of above parameters or you can pass one directly
+- **db_driver_options**: Options passed to PDO on conection, http://php.net/manual/es/pdo.setattribute.php
+- **pdo**: PDO object, Represents a connection between PHP and a database server
+- **stmt**: PDOStatement object, Represents a prepared statement and, after the statement is executed, an associated result set
+
+- **db_type**: database management system (default mysql)
+- **db_host**: Server host and port if any
+- **db_name**: Database name
+- **db_usr**: User name
+- **db_pss**: Password
+- **db_dsn**: Data Source Name(DSN), auto generated in base of above parameters or you can pass one directly
 
 
 ## Methods
 
-- \__construct: create the DSN and establish the connection, assign the PDO database handler object to $this->pdo
-- breakFree: Close the connection and destroys the object
-- directQuery($query): executes the query sended as parameter, Not recommended, it is vulnerable to SQL injection. but it can be used if you do not want to parameterize the query
-- preparedQuery($query,$arrayParameters): Prepare and execute a query, fixes sentences IN, LIKE and LIMIT for work properly in PDO MySQL. the sentence has to be parameterized with:
-  - Positional placeholders e.g. 'SELECT * FROM users WHERE **email = ?** AND **status=?**'
-  - Named placeholders e.g. 'SELECT * FROM users WHERE **email = :email** AND **status=:status**'
-- getSingleValue($query,$arrayParameters,$column = 0): It allows to fetch the value of a particular column, you can pass the name of the column or the position of the column 0-indexed
-- getArrayColumn($query,$arrayParameters,$column = 0): It allows to fetch all values of a particular column in one-dimensional array, you can pass the name of the column or the position of the column 0-indexed
-- getKeyValuePairs($query,$arrayParameters): It allows to get an array key-value pairs indexed by the first field. e.g. 'SELECT id, name FROM users', fetch mode requires the result set to contain extactly 2 columns
-- getIndexedUnique($query,$arrayParameters): Same as getKeyValuePairs, but getting not one column but full row  indexed by unique field
-- getGroupedByFirstField($query,$arrayParameters): will group rows into a nested array, where indexes will be unique values from the first columns.
-- formatIdentifier($identifier): PDO has no placeholder for identifiers like table and field names, so a developer must manually format them. this method do the trick.
+- **\__construct**: create the DSN and establish the connection, assign the PDO database handler object to $this->pdo
+- **breakFree**: Close the connection and destroys the object
+- **directQuery($query)**: executes the query sended as parameter, Not recommended, it is vulnerable to SQL injection. but it can be used if you do not want to parameterize the query
+- **preparedQuery($query,$arrayParameters)**: Prepare and execute a query, fixes sentences IN, LIKE and LIMIT for work properly in PDO MySQL. the sentence has to be parameterized with:
+  - **ositional placeholders** e.g. 'SELECT * FROM users WHERE **email = ?** AND **status=?**'
+  - **Named placeholders** e.g. 'SELECT * FROM users WHERE **email = :email** AND **status=:status**'
+- **getSingleValue($query,$arrayParameters,$column = 0)**: It allows to fetch the value of a particular column, you can pass the name of the column or the position of the column 0-indexed
+- **getArrayColumn($query,$arrayParameters,$column = 0)**: It allows to fetch all values of a particular column in one-dimensional array, you can pass the name of the column or the position of the column 0-indexed
+- **getKeyValuePairs($query,$arrayParameters)**: It allows to get an array key-value pairs indexed by the first field. e.g. 'SELECT id, name FROM users', fetch mode requires the result set to contain extactly 2 columns
+- **getIndexedUnique($query,$arrayParameters)**: Same as getKeyValuePairs, but getting not one column but full row  indexed by unique field
+- **getGroupedByFirstField($query,$arrayParameters)**: will group rows into a nested array, where indexes will be unique values from the first columns.
+- **formatIdentifier($identifier)**: PDO has no placeholder for identifiers like table and field names, so a developer must manually format them. this method do the trick.
 
 
 ## Examples and usage
