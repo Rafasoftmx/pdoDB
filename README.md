@@ -1,8 +1,6 @@
 # pdoDB
 ###### Simple class to handle a connection to MySQL DB and work around of the extension "PHP Data Objects" (PDO)
 
-**class benefits:**
-
 - validations and query fixes for clasues IN, LIKE and LIMIT for work properly in PDO MySQL
 - write less code
 - you can access directly the PDO and PDOStatement instances for extra functions
